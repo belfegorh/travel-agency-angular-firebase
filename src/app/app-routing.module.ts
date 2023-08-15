@@ -16,6 +16,7 @@ const routes: Routes = [
     path: 'agency',
     loadChildren: () =>
       import('./agency/agency.module').then((m) => m.AgencyModule),
+    canActivate: [AuthGuard],
   },
 ];
 

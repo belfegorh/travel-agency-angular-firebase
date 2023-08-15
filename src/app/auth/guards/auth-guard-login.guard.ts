@@ -1,27 +1,36 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
   Router,
   UrlTree,
+  CanActivateFn,
 } from '@angular/router';
 import { LoginService } from '../services/login.service';
 import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthGuard {
+class PermissionsService {
   constructor(public authService: LoginService, public router: Router) {}
+
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): Observable<boolean> | Promise<boolean> | UrlTree | boolean {
+  ): boolean {
     if (this.authService.isLoggedIn !== true) {
-      window.alert('Access Denied, Login is Required to Access This Page!');
-      this.router.navigate(['auth', 'login']);
+      this.router.navigate(['auth/login']);
+
+      return false;
     }
-    this.router.navigate(['agency', 'admin']);
 
     return true;
   }
 }
+
+export const AuthGuard: CanActivateFn = (
+  next: ActivatedRouteSnapshot,
+  state: RouterStateSnapshot
+): boolean => {
+  return inject(PermissionsService).canActivate(next, state);
+};
