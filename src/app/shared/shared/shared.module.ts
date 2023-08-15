@@ -10,6 +10,7 @@ import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ToastModule } from 'primeng/toast';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 @NgModule({
   declarations: [],
@@ -25,6 +26,7 @@ import { ToastModule } from 'primeng/toast';
     DialogModule,
     ProgressSpinnerModule,
     ToastModule,
+    InputSwitchModule,
   ],
 })
 export class SharedModule {}

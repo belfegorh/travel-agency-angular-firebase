@@ -10,12 +10,16 @@
       <tr>
         <th>Nombre</th>
         <th>Ciudad</th>
+        <th>Acciones</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-hotel>
       <tr>
         <td>{{ hotel.name }}</td>
         <td>{{ hotel.city }}</td>
+        <td>
+          <p-button icon="pi pi-plus" (click)="showDialog(hotel)"></p-button>
+        </td>
       </tr>
     </ng-template>
   </p-table>
@@ -28,6 +32,7 @@
     [style]="{ width: '50vw' }"
     [draggable]="false"
     [resizable]="false"
+    (onHide)="hotelForm.reset()"
   >
     <form (ngSubmit)="onSubmit()" [formGroup]="hotelForm">
       <p-panel header="nuevo Hotel">
@@ -82,12 +87,22 @@
             </div>
           </div>
           <div class="ui-grid-row">
+            <div class="ui-grid-col-2">Activo:</div>
+            <div class="ui-grid-col-6">
+              <p-inputSwitch
+                formControlName="active"
+                name="active"
+              ></p-inputSwitch>
+            </div>
+            <div class="ui-grid-col-4"></div>
+          </div>
+          <div class="ui-grid-row">
             <div class="ui-grid-col-2"></div>
             <div class="ui-grid-col-6">
               <button
                 pButton
                 type="submit"
-                label="Submit"
+                [label]="editMode ? 'Actualizar' : 'Crear'"
                 [loading]="submitted"
                 [disabled]="!hotelForm.valid"
               ></button>

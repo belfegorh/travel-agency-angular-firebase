@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { LoginService } from '../../../auth/services/login.service';
-import { HotelsService } from '../../services/hotels.service';
+import { HotelsService, db } from '../../services/hotels.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import { collection, onSnapshot, query, where } from 'firebase/firestore';
 
 @Component({
   selector: 'app-admin',
@@ -11,12 +12,15 @@ import { MessageService } from 'primeng/api';
   providers: [MessageService],
 })
 export class AdminComponent {
+  // Form
   hotelForm: FormGroup;
   submitted = false;
-
-  hotels: Hotel[] = [{ name: 'casa farallones', city: 'Cali', owner: 'xxx' }];
+  // layout
   visible: boolean = false;
-
+  editMode: boolean = false;
+  // Data
+  hotels: Hotel[] = [];
+  hotelsSnapshot: any;
   constructor(
     private loginService: LoginService,
     private hotelsService: HotelsService,
@@ -24,15 +28,37 @@ export class AdminComponent {
   ) {}
   ngOnInit() {
     this.hotelForm = new FormGroup({
-      name: new FormControl('Casa Farallones', Validators.required),
-      city: new FormControl('Cali', Validators.required),
+      name: new FormControl('', Validators.required),
+      city: new FormControl('', Validators.required),
+      owner: new FormControl(''),
+      uid: new FormControl(''),
+      active: new FormControl(true),
     });
+    const user = JSON.parse(localStorage.getItem('user')!);
+
+    const q = query(collection(db, 'hotels'), where('owner', '==', user.uid));
+
+    this.hotelsSnapshot = onSnapshot(q, (snap) => {
+      this.hotels = snap.docs.map((doc) => {
+        const hotel: Hotel = doc.data() as Hotel;
+        hotel.uid = doc.id;
+        return hotel;
+      });
+      console.log(this.hotels);
+    });
+  }
+  ngOnDestroy() {
+    this.hotelsSnapshot();
   }
   async logout() {
     const res = await this.loginService.signOut();
   }
-  showDialog() {
+  showDialog(hotel?: Hotel) {
     this.visible = true;
+    if (!!hotel) {
+      this.editMode = true;
+      this.hotelForm.setValue(hotel);
+    }
   }
 
   async onSubmit() {
@@ -40,20 +66,27 @@ export class AdminComponent {
     const user = JSON.parse(localStorage.getItem('user')!);
 
     const hotel: Hotel = this.hotelForm.value;
+    console.log(hotel, this.hotelForm.value);
+
     hotel.owner = user.uid;
-    const newDoc = await this.hotelsService.addHotelDoc(hotel);
-    console.log(newDoc);
+    const response = this.editMode
+      ? await this.hotelsService.updateHotelDoc(hotel)
+      : await this.hotelsService.addHotelDoc(hotel);
+    console.log(response);
     this.submitted = false;
     this.messageService.add({
       severity: 'success',
       summary: 'Success',
-      detail: 'Hotel creado correctamente',
+      detail: this.editMode
+        ? 'Hotel actualizado correctamente'
+        : 'Hotel creado correctamente',
     });
   }
 }
 export interface Hotel {
   name: string;
   city: string;
-  uid?: string;
+  uid: string;
   owner: string;
+  active: boolean;
 }

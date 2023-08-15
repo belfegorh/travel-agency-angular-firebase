@@ -20,7 +20,6 @@ export class LoginService {
     this.auth = getAuth();
     console.log(this.auth.currentUser);
     onAuthStateChanged(this.auth, (user) => {
-      console.log(user);
       if (user) {
         localStorage.setItem('user', JSON.stringify(user));
         JSON.parse(localStorage.getItem('user')!);
@@ -38,7 +37,6 @@ export class LoginService {
     login: string;
     password: string;
   }) {
-    console.log(login, password);
     return signInWithEmailAndPassword(this.auth, login, password);
   }
 
