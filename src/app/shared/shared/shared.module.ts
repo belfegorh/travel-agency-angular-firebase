@@ -11,6 +11,9 @@ import { DialogModule } from 'primeng/dialog';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ToastModule } from 'primeng/toast';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { TooltipModule } from 'primeng/tooltip';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { DropdownModule } from 'primeng/dropdown';
 
 @NgModule({
   declarations: [],
@@ -27,6 +30,9 @@ import { InputSwitchModule } from 'primeng/inputswitch';
     ProgressSpinnerModule,
     ToastModule,
     InputSwitchModule,
+    TooltipModule,
+    InputNumberModule,
+    DropdownModule,
   ],
 })
 export class SharedModule {}

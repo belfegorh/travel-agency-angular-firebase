@@ -8,13 +8,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { initializeApp } from 'firebase/app';
 import { environment } from '../environments/environment';
 import { AuthGuard } from './auth/guards/auth-guard-login.guard';
+import { MessageService } from 'primeng/api';
 
 initializeApp(environment.firebaseConfig);
 
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule],
-  providers: [],
+  providers: [MessageService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

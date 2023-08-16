@@ -1,4 +1,9 @@
-<button pButton label="logout" (click)="logout()"></button>
+<button
+  pButton
+  label="logout"
+  class="p-button-danger"
+  (click)="logout()"
+></button>
 <p-panel header="Mis Hoteles">
   <p-table [value]="hotels" [tableStyle]="{ 'min-width': '50rem' }">
     <ng-template pTemplate="caption">
@@ -18,7 +23,20 @@
         <td>{{ hotel.name }}</td>
         <td>{{ hotel.city }}</td>
         <td>
-          <p-button icon="pi pi-plus" (click)="showDialog(hotel)"></p-button>
+          <p-button
+            icon="pi pi-file-edit"
+            styleClass="p-button-info p-button-outlined"
+            pTooltip="Editar"
+            tooltipPosition="top"
+            (click)="showDialog(hotel)"
+          ></p-button>
+          <p-button
+            icon="pi pi-building"
+            styleClass="p-button-warning p-button-outlined"
+            pTooltip="Administrar"
+            tooltipPosition="top"
+            [routerLink]="'/agency/roms/' + hotel.uid"
+          ></p-button>
         </td>
       </tr>
     </ng-template>
@@ -32,7 +50,7 @@
     [style]="{ width: '50vw' }"
     [draggable]="false"
     [resizable]="false"
-    (onHide)="hotelForm.reset()"
+    (onHide)="clear()"
   >
     <form (ngSubmit)="onSubmit()" [formGroup]="hotelForm">
       <p-panel header="nuevo Hotel">
@@ -102,6 +120,7 @@
               <button
                 pButton
                 type="submit"
+                [class]="editMode ? 'p-button-success' : ''"
                 [label]="editMode ? 'Actualizar' : 'Crear'"
                 [loading]="submitted"
                 [disabled]="!hotelForm.valid"

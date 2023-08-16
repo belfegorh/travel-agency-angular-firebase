@@ -9,7 +9,6 @@ import { collection, onSnapshot, query, where } from 'firebase/firestore';
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss'],
-  providers: [MessageService],
 })
 export class AdminComponent {
   // Form
@@ -74,6 +73,7 @@ export class AdminComponent {
       : await this.hotelsService.addHotelDoc(hotel);
     console.log(response);
     this.submitted = false;
+
     this.messageService.add({
       severity: 'success',
       summary: 'Success',
@@ -81,6 +81,11 @@ export class AdminComponent {
         ? 'Hotel actualizado correctamente'
         : 'Hotel creado correctamente',
     });
+  }
+
+  clear() {
+    this.hotelForm.reset();
+    this.editMode = false;
   }
 }
 export interface Hotel {

@@ -1,0 +1,224 @@
+<button
+  pButton
+  label="logout"
+  class="p-button-danger"
+  (click)="logout()"
+></button>
+<p-panel [header]="'Hotel ' + currentHotelUid">
+  <p-table [value]="rooms" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="caption">
+      <div class="flex align-items-center justify-content-between">
+        <p-button icon="pi pi-plus" (click)="showDialog()"></p-button>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Nombre</th>
+        <th>Ciudad</th>
+        <th>Acciones</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-room>
+      <tr>
+        <td>{{ room.name }}</td>
+        <td>{{ room.city }}</td>
+        <td>
+          <p-button
+            icon="pi pi-file-edit"
+            styleClass="p-button-info p-button-outlined"
+            pTooltip="Editar"
+            tooltipPosition="top"
+            (click)="showDialog(room)"
+          ></p-button>
+          <p-button
+            icon="pi pi-building"
+            styleClass="p-button-warning p-button-outlined"
+            pTooltip="Administrar"
+            tooltipPosition="top"
+            [routerLink]="'/agency/roms/' + room.uid"
+          ></p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-panel>
+<div class="card flex justify-content-center">
+  <p-dialog
+    header="Header"
+    [(visible)]="visible"
+    [modal]="true"
+    [style]="{ width: '50vw' }"
+    [draggable]="false"
+    [resizable]="false"
+    (onHide)="clear()"
+  >
+    <form (ngSubmit)="onSubmit()" [formGroup]="roomForm">
+      <p-panel header="nuevo room">
+        <div
+          class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid"
+          style="margin: 10px 0px"
+        >
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-2">
+              <label class="block font-bold mb-2">Nombre:</label>
+            </div>
+            <div class="ui-grid-col-6">
+              <input
+                pInputText
+                type="text"
+                formControlName="name"
+                class="form-control"
+                name="name"
+              />
+            </div>
+            <div class="ui-grid-col-4">
+              <div
+                [hidden]="
+                  roomForm.controls['name'].valid ||
+                  !roomForm.controls['name'].dirty
+                "
+                class="alert alert-danger"
+              >
+                Nombre es requerido
+              </div>
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-2">
+              <label class="block font-bold mb-2">Camas:</label>
+            </div>
+            <div class="ui-grid-col-6">
+              <input
+                pInputText
+                type="number"
+                formControlName="beds"
+                class="form-control"
+                name="beds"
+              />
+            </div>
+            <div class="ui-grid-col-4">
+              <div
+                [hidden]="
+                  roomForm.controls['beds'].valid ||
+                  !roomForm.controls['beds'].dirty
+                "
+                class="alert alert-danger"
+              >
+                El numero de camas es requerido
+              </div>
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-2">
+              <label class="block font-bold mb-2">Costo base:</label>
+            </div>
+            <div class="ui-grid-col-6">
+              <p-inputNumber
+                formControlName="price"
+                class="form-control"
+                inputId="price"
+                mode="currency"
+                currency="USD"
+                locale="en-US"
+                name="price"
+              >
+              </p-inputNumber>
+            </div>
+            <div class="ui-grid-col-4">
+              <div
+                [hidden]="
+                  roomForm.controls['price'].valid ||
+                  !roomForm.controls['price'].dirty
+                "
+                class="alert alert-danger"
+              >
+                Precio es requerido
+              </div>
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-2">
+              <label class="block font-bold mb-2">Impuesto:</label>
+            </div>
+            <div class="ui-grid-col-6">
+              <p-inputNumber
+                formControlName="tax"
+                class="form-control"
+                inputId="tax"
+                mode="currency"
+                currency="USD"
+                locale="en-US"
+                name="tax"
+              >
+              </p-inputNumber>
+            </div>
+            <div class="ui-grid-col-4">
+              <div
+                [hidden]="
+                  roomForm.controls['tax'].valid ||
+                  !roomForm.controls['tax'].dirty
+                "
+                class="alert alert-danger"
+              >
+                Impuesto es requerido
+              </div>
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-2">
+              <label class="block font-bold mb-2">Tipo:</label>
+            </div>
+            <div class="ui-grid-col-6">
+              <p-dropdown
+                formControlName="type"
+                [options]="roomsTypes"
+                optionLabel="name"
+                name="type"
+                class="form-control"
+              ></p-dropdown>
+            </div>
+            <div class="ui-grid-col-4">
+              <div
+                [hidden]="
+                  roomForm.controls['type'].valid ||
+                  !roomForm.controls['type'].dirty
+                "
+                class="alert alert-danger"
+              >
+                Tipo es requerido
+              </div>
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-2">
+              <label class="block font-bold mb-2">Activo:</label>
+            </div>
+            <div class="ui-grid-col-6">
+              <p-inputSwitch
+                formControlName="active"
+                name="active"
+              ></p-inputSwitch>
+            </div>
+            <div class="ui-grid-col-4"></div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-2"></div>
+            <div class="ui-grid-col-6">
+              <button
+                pButton
+                type="submit"
+                [class]="editMode ? 'p-button-success' : ''"
+                [label]="editMode ? 'Actualizar' : 'Crear'"
+                [loading]="submitted"
+                [disabled]="!roomForm.valid"
+              ></button>
+            </div>
+            <div class="ui-grid-col-4"></div>
+          </div>
+        </div>
+      </p-panel>
+    </form>
+  </p-dialog>
+</div>
+
+<p-toast></p-toast>
