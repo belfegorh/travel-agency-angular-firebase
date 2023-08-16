@@ -1,10 +1,4 @@
-<button
-  pButton
-  label="logout"
-  class="p-button-danger"
-  (click)="logout()"
-></button>
-<p-panel [header]="'Hotel ' + currentHotelUid">
+<p-panel [header]="'Hotel ' + currentHotel.name">
   <p-table [value]="rooms" [tableStyle]="{ 'min-width': '50rem' }">
     <ng-template pTemplate="caption">
       <div class="flex align-items-center justify-content-between">
@@ -14,14 +8,25 @@
     <ng-template pTemplate="header">
       <tr>
         <th>Nombre</th>
-        <th>Ciudad</th>
+        <th>Camas</th>
+        <th>Precio</th>
+        <th>Tipo</th>
+        <th>Estado</th>
         <th>Acciones</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-room>
       <tr>
         <td>{{ room.name }}</td>
-        <td>{{ room.city }}</td>
+        <td>{{ room.beds }}</td>
+        <td>{{ room.price }}</td>
+        <td>{{ room.type }}</td>
+        <td>
+          <p-tag
+            [severity]="room.active ? 'success' : 'danger'"
+            [value]="room.active ? 'Activo' : 'Inactivo'"
+          ></p-tag>
+        </td>
         <td>
           <p-button
             icon="pi pi-file-edit"
@@ -29,13 +34,6 @@
             pTooltip="Editar"
             tooltipPosition="top"
             (click)="showDialog(room)"
-          ></p-button>
-          <p-button
-            icon="pi pi-building"
-            styleClass="p-button-warning p-button-outlined"
-            pTooltip="Administrar"
-            tooltipPosition="top"
-            [routerLink]="'/agency/roms/' + room.uid"
           ></p-button>
         </td>
       </tr>
@@ -53,7 +51,7 @@
     (onHide)="clear()"
   >
     <form (ngSubmit)="onSubmit()" [formGroup]="roomForm">
-      <p-panel header="nuevo room">
+      <p-panel header="Nueva Habitacion">
         <div
           class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid"
           style="margin: 10px 0px"
@@ -172,7 +170,6 @@
               <p-dropdown
                 formControlName="type"
                 [options]="roomsTypes"
-                optionLabel="name"
                 name="type"
                 class="form-control"
               ></p-dropdown>

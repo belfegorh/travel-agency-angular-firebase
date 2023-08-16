@@ -6,25 +6,20 @@ import {
   collection,
   addDoc,
   onSnapshot,
-  getDoc,
 } from 'firebase/firestore';
 import { getApp } from 'firebase/app';
 import { Hotel, Room } from '../interfaces/agency';
 const firebaseApp = getApp();
 export const db = getFirestore(firebaseApp);
-
 @Injectable({
   providedIn: 'root',
 })
-export class HotelsService {
+export class RoomsService {
   constructor() {}
-  async addHotelDoc(hotel: Hotel) {
-    return await addDoc(collection(db, 'hotels'), hotel);
+  async addRoomDoc(room: Room) {
+    return await addDoc(collection(db, 'rooms'), room);
   }
-  async updateHotelDoc(hotel: Hotel) {
-    return await setDoc(doc(db, 'hotels', hotel.uid), hotel);
-  }
-  async getHotelDoc(hotelUid: string) {
-    return await getDoc(doc(db, 'hotels', hotelUid));
+  async updateRoomDoc(room: Room) {
+    return await setDoc(doc(db, 'rooms', room.uid), room);
   }
 }

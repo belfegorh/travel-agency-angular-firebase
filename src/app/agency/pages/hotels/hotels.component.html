@@ -1,0 +1,140 @@
+<p-panel header="Mis Hoteles">
+  <p-table [value]="hotels" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="caption">
+      <div class="flex align-items-center justify-content-between">
+        <p-button icon="pi pi-plus" (click)="showDialog()"></p-button>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Nombre</th>
+        <th>Ciudad</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-hotel>
+      <tr>
+        <td>{{ hotel.name }}</td>
+        <td>{{ hotel.city }}</td>
+        <td>
+          <p-tag
+            [severity]="hotel.active ? 'success' : 'danger'"
+            [value]="hotel.active ? 'Activo' : 'Inactivo'"
+          ></p-tag>
+        </td>
+
+        <td>
+          <p-button
+            class="table-row-button"
+            icon="pi pi-file-edit"
+            styleClass="p-button-info p-button-outlined table-row-button"
+            pTooltip="Editar"
+            tooltipPosition="top"
+            (click)="showDialog(hotel)"
+          ></p-button>
+          <p-button
+            icon="pi pi-building"
+            styleClass="p-button-warning p-button-outlined"
+            pTooltip="Administrar"
+            tooltipPosition="top"
+            [routerLink]="'/agency/admin/roms/' + hotel.uid"
+          ></p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-panel>
+<div class="card flex justify-content-center">
+  <p-dialog
+    header="Header"
+    [(visible)]="visible"
+    [modal]="true"
+    [style]="{ width: '50vw' }"
+    [draggable]="false"
+    [resizable]="false"
+    (onHide)="clear()"
+  >
+    <form (ngSubmit)="onSubmit()" [formGroup]="hotelForm">
+      <p-panel header="nuevo Hotel">
+        <div
+          class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid"
+          style="margin: 10px 0px"
+        >
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-2">Nombre:</div>
+            <div class="ui-grid-col-6">
+              <input
+                pInputText
+                type="text"
+                formControlName="name"
+                class="form-control"
+                name="name"
+              />
+            </div>
+            <div class="ui-grid-col-4">
+              <div
+                [hidden]="
+                  hotelForm.controls['name'].valid ||
+                  !hotelForm.controls['name'].dirty
+                "
+                class="alert alert-danger"
+              >
+                Nombre es requerido
+              </div>
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-2">Ciudad:</div>
+            <div class="ui-grid-col-6">
+              <input
+                pInputText
+                type="text"
+                formControlName="city"
+                class="form-control"
+                name="city"
+              />
+            </div>
+            <div class="ui-grid-col-4">
+              <div
+                [hidden]="
+                  hotelForm.controls['city'].valid ||
+                  !hotelForm.controls['city'].dirty
+                "
+                class="alert alert-danger"
+              >
+                Ciudad es requerida
+              </div>
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-2">Activo:</div>
+            <div class="ui-grid-col-6">
+              <p-inputSwitch
+                formControlName="active"
+                name="active"
+              ></p-inputSwitch>
+            </div>
+            <div class="ui-grid-col-4"></div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-2"></div>
+            <div class="ui-grid-col-6">
+              <button
+                pButton
+                type="submit"
+                [class]="editMode ? 'p-button-success' : ''"
+                [label]="editMode ? 'Actualizar' : 'Crear'"
+                [loading]="submitted"
+                [disabled]="!hotelForm.valid"
+              ></button>
+            </div>
+            <div class="ui-grid-col-4"></div>
+          </div>
+        </div>
+      </p-panel>
+    </form>
+  </p-dialog>
+</div>
+
+<p-toast></p-toast>

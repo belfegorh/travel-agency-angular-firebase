@@ -14,6 +14,8 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { TooltipModule } from 'primeng/tooltip';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DropdownModule } from 'primeng/dropdown';
+import { TagModule } from 'primeng/tag';
+import { MenubarModule } from 'primeng/menubar';
 
 @NgModule({
   declarations: [],
@@ -33,6 +35,8 @@ import { DropdownModule } from 'primeng/dropdown';
     TooltipModule,
     InputNumberModule,
     DropdownModule,
+    TagModule,
+    MenubarModule,
   ],
 })
 export class SharedModule {}

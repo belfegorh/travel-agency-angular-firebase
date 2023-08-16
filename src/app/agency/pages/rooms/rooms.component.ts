@@ -2,10 +2,13 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { LoginService } from '../../../auth/services/login.service';
-import { HotelsService, db } from '../../services/hotels.service';
+import { HotelsService } from '../../services/hotels.service';
+import { RoomsService, db } from '../../services/rooms.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import { Hotel, Room } from '../../interfaces/agency';
+
 @Component({
   selector: 'app-rooms',
   templateUrl: './rooms.component.html',
@@ -23,16 +26,22 @@ export class RoomsComponent {
   // Data
   rooms: Room[] = [];
   currentHotelUid: string;
-  roomsTypes = [
-    { name: 'Sencilla', code: 'Sencilla' },
-    { name: 'Doble', code: 'Doble' },
-    { name: 'Triple', code: 'Triple' },
-  ];
+  roomsSnapshot: any;
+  currentHotel: Hotel = {
+    name: '',
+    city: '',
+    uid: '',
+    owner: '',
+    active: false,
+  };
+
+  roomsTypes = ['Sencilla', 'Doble', 'Triple'];
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private loginService: LoginService,
-    // private roomsService: RoomsService,
+    private roomsService: RoomsService,
+    private hotelsService: HotelsService,
     private messageService: MessageService
   ) {}
   ngOnInit() {
@@ -42,20 +51,37 @@ export class RoomsComponent {
       tax: new FormControl('', Validators.required),
       type: new FormControl('', Validators.required),
       beds: new FormControl('', Validators.required),
+      hotelUid: new FormControl(''),
+      uid: new FormControl(''),
       active: new FormControl(true),
     });
+    this.currentHotelUid = this.activatedRoute.snapshot.paramMap.get(
+      'hoteluid'
+    ) as string;
 
-    const subActivatedRoute = this.activatedRoute.paramMap.subscribe(
-      (params) => (this.currentHotelUid = params.get('hoteluid') as string)
+    const q = query(
+      collection(db, 'rooms'),
+      where('hotelUid', '==', this.currentHotelUid)
     );
-    this.subs.push(subActivatedRoute);
+
+    this.roomsSnapshot = onSnapshot(q, (snap) => {
+      this.rooms = snap.docs.map((doc) => {
+        const room: Room = doc.data() as Room;
+        room.uid = doc.id;
+        return room;
+      });
+    });
+    this.getHotelData();
   }
   ngOnDestroy(): void {
     this.subs.forEach((sub) => sub.unsubscribe());
+    this.roomsSnapshot();
   }
-  async logout() {
-    const res = await this.loginService.signOut();
+  async getHotelData() {
+    const hotel = await this.hotelsService.getHotelDoc(this.currentHotelUid);
+    this.currentHotel = hotel.data() as Hotel;
   }
+
   showDialog(room?: Room) {
     this.visible = true;
     if (!!room) {
@@ -72,10 +98,10 @@ export class RoomsComponent {
     console.log(room, this.roomForm.value);
 
     room.hotelUid = this.currentHotelUid;
-    // const response = this.editMode
-    //   ? await this.roomsService.updateroomDoc(room)
-    //   : await this.roomsService.addroomDoc(room);
-    // console.log(response);
+    const response = this.editMode
+      ? await this.roomsService.updateRoomDoc(room)
+      : await this.roomsService.addRoomDoc(room);
+    console.log(response);
     this.submitted = false;
 
     this.messageService.add({
@@ -91,15 +117,4 @@ export class RoomsComponent {
     this.roomForm.reset();
     this.editMode = false;
   }
-}
-interface Room {
-  uid?: number;
-  hotelUid: string;
-
-  name: string;
-  price: number;
-  tax: number;
-  type: string;
-  beds: number;
-  active: boolean;
 }
