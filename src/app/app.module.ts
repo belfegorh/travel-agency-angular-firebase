@@ -9,8 +9,10 @@ import { initializeApp } from 'firebase/app';
 import { environment } from '../environments/environment';
 import { AuthGuard } from './auth/guards/auth-guard-login.guard';
 import { MessageService } from 'primeng/api';
+import { getFirestore } from 'firebase/firestore';
 
-initializeApp(environment.firebaseConfig);
+export const app = initializeApp(environment.firebaseConfig);
+export const db = getFirestore(app);
 
 @NgModule({
   declarations: [AppComponent],
