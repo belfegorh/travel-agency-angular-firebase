@@ -32,6 +32,7 @@ export class RoomsComponent {
     city: '',
     uid: '',
     owner: '',
+    img: '',
     active: false,
   };
 
