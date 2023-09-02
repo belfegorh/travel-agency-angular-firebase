@@ -44,7 +44,6 @@ export class BookingsComponent {
         booking.accommodationDates[1] = new Date(
           booking.accommodationDates[1].seconds * 1000
         );
-        console.log(booking);
         return booking;
       });
     });

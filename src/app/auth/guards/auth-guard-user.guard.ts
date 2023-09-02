@@ -19,7 +19,6 @@ class PermissionsService {
     state: RouterStateSnapshot
   ): boolean {
     const user = JSON.parse(localStorage.getItem('rol')!);
-    console.log(user);
     if (user?.rol !== 'hotelAdmin') {
       this.router.navigate(['/traveler/admin']);
 

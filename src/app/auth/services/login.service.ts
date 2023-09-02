@@ -21,7 +21,6 @@ export class LoginService {
 
   constructor(public router: Router) {
     this.auth = getAuth();
-    console.log(this.auth.currentUser);
     onAuthStateChanged(this.auth, (userfb) => {
       if (userfb) {
         const rol = this.getTypeUser(userfb.uid);
@@ -43,7 +42,11 @@ export class LoginService {
     const docRef = doc(db, 'users', uid);
     const docSnap = await getDoc(docRef);
     const data = await docSnap.data();
-
+    if (data?.['rol'] === 'hotelAdmin') {
+      this.router.navigate(['/agency/admin']);
+    } else {
+      this.router.navigate(['/traveler/admin']);
+    }
     localStorage.setItem('rol', JSON.stringify(data));
     return;
   }

@@ -23,8 +23,5 @@ export class LoginComponent {
   async onSubmit() {
     this.submitted = true;
     const res = await this.loginService.firebaseLogin(this.loginForm.value);
-    if (this.loginService.isLoggedIn) {
-      this.router.navigate(['agency/admin']);
-    }
   }
 }

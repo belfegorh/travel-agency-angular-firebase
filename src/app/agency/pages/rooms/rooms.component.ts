@@ -96,13 +96,11 @@ export class RoomsComponent {
     const user = JSON.parse(localStorage.getItem('user')!);
 
     const room: Room = this.roomForm.value;
-    console.log(room, this.roomForm.value);
 
     room.hotelUid = this.currentHotelUid;
     const response = this.editMode
       ? await this.roomsService.updateRoomDoc(room)
       : await this.roomsService.addRoomDoc(room);
-    console.log(response);
     this.submitted = false;
 
     this.messageService.add({

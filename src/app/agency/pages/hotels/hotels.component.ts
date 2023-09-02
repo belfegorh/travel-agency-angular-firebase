@@ -45,7 +45,6 @@ export class HotelsComponent {
         hotel.uid = doc.id;
         return hotel;
       });
-      console.log(this.hotels);
     });
   }
   ngOnDestroy() {
@@ -65,13 +64,11 @@ export class HotelsComponent {
     const user = JSON.parse(localStorage.getItem('user')!);
 
     const hotel: Hotel = this.hotelForm.value;
-    console.log(hotel, this.hotelForm.value);
 
     hotel.owner = user.uid;
     const response = this.editMode
       ? await this.hotelsService.updateHotelDoc(hotel)
       : await this.hotelsService.addHotelDoc(hotel);
-    console.log(response);
     this.submitted = false;
 
     this.messageService.add({

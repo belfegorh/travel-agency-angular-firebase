@@ -118,7 +118,6 @@ export class BookingComponent {
   }
 
   changeGuests(event: any) {
-    console.log(event);
     if (event.value == 2 && this.guest().length == 1) {
       this.guest().push(this.newGuest());
     } else {
@@ -138,11 +137,9 @@ export class BookingComponent {
 
   async onSubmit() {
     this.submitted = true;
-    console.log('form', this.bookingForm.value);
     const user = JSON.parse(localStorage.getItem('user')!);
 
     const booking: Booking = this.bookingForm.value;
-    console.log('obj', booking);
 
     booking.userUid = user.uid;
     booking.hotelUid = this.currentHotelUid;
@@ -150,7 +147,6 @@ export class BookingComponent {
     booking.updatedTimestamp = new Date();
     booking.hotelUid = this.currentHotelUid;
     const response = await this.bookingService.addBookingDoc(booking);
-    console.log(response);
     this.submitted = false;
 
     this.messageService.add({

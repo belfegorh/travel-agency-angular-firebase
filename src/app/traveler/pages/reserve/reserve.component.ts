@@ -24,7 +24,6 @@ export class ReserveComponent {
         hotel.uid = doc.id;
         return hotel;
       });
-      console.log(this.hotels);
     });
   }
 
