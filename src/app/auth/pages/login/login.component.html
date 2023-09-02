@@ -57,7 +57,8 @@
             <button
               pButton
               type="submit"
-              label="Submit"
+              label="Ingresar"
+              [loading]="submitted"
               [disabled]="!loginForm.valid"
             ></button>
           </div>
@@ -67,3 +68,4 @@
     </p-panel>
   </form>
 </div>
+<p-toast></p-toast>
