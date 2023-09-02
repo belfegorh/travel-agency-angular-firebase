@@ -30,6 +30,7 @@ export class HotelsComponent {
     this.hotelForm = new FormGroup({
       name: new FormControl('', Validators.required),
       city: new FormControl('', Validators.required),
+      img: new FormControl('', Validators.required),
       owner: new FormControl(''),
       uid: new FormControl(''),
       active: new FormControl(true),

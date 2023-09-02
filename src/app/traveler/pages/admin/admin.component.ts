@@ -15,12 +15,12 @@ export class AdminComponent {
     this.menuItems = [
       {
         label: 'Reservar',
-        icon: 'pi pi-building',
+        icon: 'pi pi-globe',
         routerLink: '/traveler/admin/reserve',
       },
       {
         label: 'Reservas',
-        icon: 'pi pi-building',
+        icon: 'pi pi-desktop',
         routerLink: '/traveler/admin/bookings',
       },
       {
