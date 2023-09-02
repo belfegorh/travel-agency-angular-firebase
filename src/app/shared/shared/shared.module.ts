@@ -18,12 +18,11 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { DropdownModule } from 'primeng/dropdown';
 import { TagModule } from 'primeng/tag';
 import { MenubarModule } from 'primeng/menubar';
-import { DataViewModule } from 'primeng/dataview';
+import { DataViewModule, DataViewLayoutOptions } from 'primeng/dataview';
 import { RatingModule } from 'primeng/rating';
 import { CalendarModule } from 'primeng/calendar';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { DividerModule } from 'primeng/divider';
-
 @NgModule({
   declarations: [],
   imports: [CommonModule],

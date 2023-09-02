@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { LoginService } from '../../../auth/services/login.service';
 import { HotelsService } from '../../../agency/services/hotels.service';
 import { RoomsService, db } from '../../../agency/services/rooms.service';
+import { BookingService } from '../../services/booking.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FormArray, FormBuilder } from '@angular/forms';
 
@@ -38,13 +39,16 @@ export class BookingComponent {
     img: '',
     active: false,
   };
+  layout: 'list' | 'grid' = 'list';
 
-  roomsTypes = ['Sencilla', 'Doble', 'Triple'];
+  generes = ['Hombre', 'Mujer', 'Otro'];
+  documentTypes = ['C.C.', 'C.E.', 'Otro'];
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private loginService: LoginService,
     private roomsService: RoomsService,
+    private bookingService: BookingService,
     private hotelsService: HotelsService,
     private messageService: MessageService,
     private fb: FormBuilder
@@ -127,36 +131,33 @@ export class BookingComponent {
     this.currentHotel = hotel.data() as Hotel;
   }
 
-  showDialog(room?: Room) {
+  showDialog(room: Room) {
     this.visible = true;
-    if (!!room) {
-      this.editMode = true;
-      this.bookingForm.setValue(room);
-    }
+    this.bookingForm.patchValue({ roomUid: room.uid });
   }
 
   async onSubmit() {
     this.submitted = true;
-    console.log(this.bookingForm.value);
-    // const user = JSON.parse(localStorage.getItem('user')!);
+    console.log('form', this.bookingForm.value);
+    const user = JSON.parse(localStorage.getItem('user')!);
 
-    // const room: Room = this.bookingForm.value;
-    // console.log(room, this.bookingForm.value);
+    const booking: Booking = this.bookingForm.value;
+    console.log('obj', booking);
 
-    // room.hotelUid = this.currentHotelUid;
-    // const response = this.editMode
-    //   ? await this.roomsService.updateRoomDoc(room)
-    //   : await this.roomsService.addRoomDoc(room);
-    // console.log(response);
-    // this.submitted = false;
+    booking.userUid = user.uid;
+    booking.hotelUid = this.currentHotelUid;
+    booking.createdTimestamp = new Date();
+    booking.updatedTimestamp = new Date();
+    booking.hotelUid = this.currentHotelUid;
+    const response = await this.bookingService.addBookingDoc(booking);
+    console.log(response);
+    this.submitted = false;
 
-    // this.messageService.add({
-    //   severity: 'success',
-    //   summary: 'Success',
-    //   detail: this.editMode
-    //     ? 'room actualizado correctamente'
-    //     : 'room creado correctamente',
-    // });
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: 'Reserva creado correctamente',
+    });
   }
 
   clear() {

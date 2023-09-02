@@ -5,8 +5,8 @@ export interface Booking {
   roomUid: string;
   emergencyContactPhone: number;
   emergencyContactName: string;
-  createdTimestamp?: number;
-  updatedTimestamp: number;
+  createdTimestamp?: Date;
+  updatedTimestamp: Date;
   accommodationDates: Date[];
   active: boolean;
   guests: Guest[];
