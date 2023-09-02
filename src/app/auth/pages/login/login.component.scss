@@ -1,0 +1,21 @@
+.form-control {
+  width: 100%;
+}
+.ui-grid-row {
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.login-form {
+  width: 30%;
+}
+.container {
+  height: 90vh;
+  width: 100vw;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  align-items: stretch;
+}
