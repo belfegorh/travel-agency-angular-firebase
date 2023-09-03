@@ -1,5 +1,5 @@
 <div class="card">
-  <p-dataView #dv [value]="hotels">
+  <p-dataView #dv [value]="hotels" [paginator]="true" [layout]="'list'">
     <ng-template let-hotel pTemplate="listItem">
       <div class="col-12">
         <div

@@ -1,5 +1,11 @@
 <p-panel header="Mis Hoteles">
-  <p-table [value]="hotels" [tableStyle]="{ 'min-width': '50rem' }">
+  <p-table
+    [value]="hotels"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    [paginator]="true"
+    [rows]="5"
+    [showCurrentPageReport]="true"
+  >
     <ng-template pTemplate="caption">
       <div class="flex align-items-center justify-content-between">
         Lista de hoteles
