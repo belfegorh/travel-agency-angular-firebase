@@ -1,9 +1,35 @@
 # TravelAgencyAngularFirebase
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.0.
+Este proyecto es construido en [Angular CLI](https://github.com/angular/angular-cli) version 16.2.0, usando [Firebase](https://firebase.google.com/) y [PrimenG](https://primeng.org/)
 
-## Development server
+# Como iniciar
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
-docker build -t TravelAgencyAngularFirebase .
-docker run -p 80:80 TravelAgencyAngularFirebase
+Despues de descargar el proyecto ingresar a la carpeta contenedora y correr:
+`npm i`
+y luego correr:
+
+`ng serve`
+
+Ahora el poryecto esta corriendo en el puerto `4200`, puede abrir la url: `http://localhost:4200/` y empezar a usarlo.
+
+## Usuarios
+
+Existen dos usuarios precreados con dos roles diferentes:
+
+Usuario Agencia: `francisco@email.com`
+password: `123456789`
+
+Usuario Viajero: `miguel@email.com`
+password: `123456789`
+
+El usuario agencia puede crear y administrar hoteles. El usuario viajero puede hacer reservas en los hoteles.
+
+## Docker
+
+El repositorio incluye un Dockerfile para desplegar de forma facil y rapida en cualquer servidor que pueda usar Docker, con los siguientes comandos:
+`docker build -t TravelAgencyAngularFirebase`
+`docker run -p 80:80 TravelAgencyAngularFirebase`
+
+## GitHub
+
+El repositorio incluye archivos de Github actions para desplegar en el hosting de firebase de forma continua. El proyecto queda esplegado en el siguiente [enlace](https://travel-agency-angular-firebase.web.app/)
