@@ -1,5 +1,5 @@
 <div class="card">
-  <p-dataView #dv [value]="hotels" [paginator]="true" [layout]="'list'">
+  <p-dataView #dv2 [value]="hotels">
     <ng-template let-hotel pTemplate="listItem">
       <div class="col-12">
         <div
@@ -7,8 +7,8 @@
         >
           <img
             class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
-            [src]="hotel.img"
-            [alt]="hotel.img"
+            [src]="hotel?.img"
+            [alt]="hotel?.img"
             [height]="120"
           />
           <div
